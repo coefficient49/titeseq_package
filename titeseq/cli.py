@@ -19,12 +19,15 @@ def main(counts, samples, mode, output):
     b_bg = samples_df[samples_df['concentration'] == 0]['mean_log_fluorescence'].mean()
     
     if mode == 'gpu' and torch.cuda.is_available():
-        click.echo("Running GPU-accelerated Poisson MLE...")
-        # Prepare counts as a large tensor (variants x concentrations)
-        # Note: This requires mapping counts to concentrations based on sample sheet
-        counts_array = counts_df.drop(columns=['sequence']).values
-        kd_results, a_results = fit_gpu(torch.tensor(counts_array), concs, b_bg)
-        
+        click.echo("Running GPU-accelerated fit (batched)...")
+        counts_tensor = prepare_gpu_tensors(counts_df, samples_df, concs)  # shape: (variants, num_concs)
+        kd_results, a_results = fit_gpu(counts_tensor,
+                                        concs,
+                                        b_bg,
+                                        batch_size=1024,    # tune to your GPU
+                                        max_epochs=1500,
+                                        tol=1e-6,
+                                        lr=0.05)
         counts_df['kd'] = kd_results
         counts_df['expression_a'] = a_results
     else:
