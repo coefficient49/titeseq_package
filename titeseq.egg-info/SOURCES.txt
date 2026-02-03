@@ -1,0 +1,12 @@
+setup.py
+titeseq/__init__.py
+titeseq/cli.py
+titeseq/cpu_backend.py
+titeseq/gpu_backend.py
+titeseq/utils.py
+titeseq.egg-info/PKG-INFO
+titeseq.egg-info/SOURCES.txt
+titeseq.egg-info/dependency_links.txt
+titeseq.egg-info/entry_points.txt
+titeseq.egg-info/requires.txt
+titeseq.egg-info/top_level.txt

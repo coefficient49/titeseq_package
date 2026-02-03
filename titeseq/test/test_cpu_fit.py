@@ -5,6 +5,7 @@ import pytest
 from click.testing import CliRunner
 from titeseq.cpu_backend import fit_cpu
 from titeseq.cli import main as cli_main
+from pathlib import Path
 
 def hill_function(c, kd, a, b):
     return a * (c / (c + kd)) + b
